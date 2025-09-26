@@ -8,15 +8,39 @@ body {
 }
 
 h1 {
-    margin-top: 24px;
-    margin-bottom: 8px;
+    margin-top: 16px;
+    font-size: 1.4em;
+    margin-bottom: 4px;
 }
 
 #pong {
     background: #111;
     display: block;
     margin: 0 auto;
-    border: 4px solid #fff;
+    border: 3px solid #fff;
     border-radius: 8px;
-    box-shadow: 0 6px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    touch-action: none;
+    user-select: none;
+    max-width: 98vw;
+    height: auto;
+}
+
+.touch-hint {
+    color: #ccc;
+    font-size: 0.95em;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 800px) {
+    #pong {
+        width: 99vw !important;
+        height: 53vw !important;
+        max-width: 99vw;
+        max-height: 60vh;
+    }
+    h1 {
+        font-size: 1.2em;
+    }
 }
