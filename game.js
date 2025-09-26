@@ -1,9 +1,20 @@
 const canvas = document.getElementById('pong');
 const ctx = canvas.getContext('2d');
 
+// Responsive resize for canvas (for mobile)
+function resizeCanvas() {
+    // Keep 16:9 aspect ratio
+    let width = Math.min(window.innerWidth * 0.99, 700);
+    let height = width * 400 / 700;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
 // Game constants
-const WIDTH = canvas.width;
-const HEIGHT = canvas.height;
+const WIDTH = 700;
+const HEIGHT = 400;
 
 const PADDLE_WIDTH = 12;
 const PADDLE_HEIGHT = 80;
@@ -147,14 +158,41 @@ function resetBall() {
     ballSpeedY = Math.sin(angle) * speed;
 }
 
-// Mouse control for player paddle
+// Mouse control for player paddle (desktop only)
 canvas.addEventListener('mousemove', function(evt) {
     let rect = canvas.getBoundingClientRect();
     let mouseY = evt.clientY - rect.top;
-    playerY = mouseY - PADDLE_HEIGHT / 2;
+    // Skala ke koordinat asli canvas
+    let scale = HEIGHT / canvas.getBoundingClientRect().height;
+    playerY = mouseY * scale - PADDLE_HEIGHT / 2;
     // Clamp player paddle
     playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
 });
+
+// Touch control for player paddle (mobile)
+let touchActive = false;
+canvas.addEventListener('touchstart', function(evt) {
+    touchActive = true;
+    handleTouch(evt);
+}, {passive: false});
+canvas.addEventListener('touchmove', function(evt) {
+    if (touchActive) handleTouch(evt);
+    evt.preventDefault();
+}, {passive: false});
+canvas.addEventListener('touchend', function(evt) {
+    touchActive = false;
+}, {passive: false});
+
+function handleTouch(evt) {
+    if (evt.touches.length > 0) {
+        let rect = canvas.getBoundingClientRect();
+        let y = evt.touches[0].clientY - rect.top;
+        let scale = HEIGHT / canvas.getBoundingClientRect().height;
+        playerY = y * scale - PADDLE_HEIGHT / 2;
+        // Clamp player paddle
+        playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
+    }
+}
 
 // Game loop
 function gameLoop() {
