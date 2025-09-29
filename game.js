@@ -182,7 +182,7 @@ function handleTouch(evt) {
 
 // Backend leaderboard submission
 function submitScore(username, score) {
-    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details/api/score', {
+    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, score }),
@@ -201,7 +201,7 @@ function submitScore(username, score) {
 
 // Tampilkan leaderboard
 function loadLeaderboard() {
-    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details/api/leaderboard')
+    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93')
         .then(res => res.json())
         .then(data => {
             let html = '<h3>Leaderboard</h3><ol>';
@@ -218,4 +218,5 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 gameLoop();
+
 
