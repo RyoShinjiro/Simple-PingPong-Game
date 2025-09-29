@@ -1,46 +1,106 @@
-body {
-    background: #20232a;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+:root {
+    --bg-dark: #121212;
+    --bg-panel: #1e1e1e;
+    --accent: #00e5ff;
+    --text: #f0f0f0;
+    --border: #333;
 }
 
-h1 {
-    margin-top: 16px;
-    font-size: 1.4em;
-    margin-bottom: 4px;
+body {
+    background: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #0c0c0c, #1a1a2e);
+}
+
+.container {
+    max-width: 800px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+}
+
+header p {
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 1.1rem;
+}
+
+.game-area {
+    margin: 20px 0;
 }
 
 #pong {
-    background: #111;
+    background: #0d0d0d;
     display: block;
     margin: 0 auto;
-    border: 3px solid #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
     touch-action: none;
     user-select: none;
-    max-width: 98vw;
+    width: 100%;
     height: auto;
+    max-height: 60vh;
 }
 
 .touch-hint {
-    color: #ccc;
-    font-size: 0.95em;
-    margin-top: 6px;
-    margin-bottom: 10px;
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-top: 10px;
 }
 
-@media (max-width: 800px) {
-    #pong {
-        width: 99vw !important;
-        height: 53vw !important;
-        max-width: 99vw;
-        max-height: 60vh;
+.leaderboard-container {
+    background: var(--bg-panel);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.leaderboard-container h2 {
+    color: var(--accent);
+    margin-top: 0;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+#leaderboard {
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#leaderboard ol {
+    padding-left: 20px;
+    margin: 0;
+}
+
+#leaderboard li {
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    color: #ddd;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
     }
-    h1 {
-        font-size: 1.2em;
+
+    #pong {
+        height: 45vw;
     }
 }
