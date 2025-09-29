@@ -37,12 +37,12 @@ let ballSpeedX = 5 * (Math.random() > 0.5 ? 1 : -1);
 let ballSpeedY = 3 * (Math.random() > 0.5 ? 1 : -1);
 
 // Draw functions
-function drawRect(x, y, w, h, color="#fff") {
+function drawRect(x, y, w, h, color = "#fff") {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
 }
 
-function drawCircle(x, y, r, color="#fff") {
+function drawCircle(x, y, r, color = "#fff") {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2, false);
@@ -53,10 +53,10 @@ function drawCircle(x, y, r, color="#fff") {
 function drawNet() {
     ctx.strokeStyle = '#fff5';
     ctx.lineWidth = 4;
-    for(let i = 0; i < HEIGHT; i += 28) {
+    for (let i = 0; i < HEIGHT; i += 28) {
         ctx.beginPath();
-        ctx.moveTo(WIDTH/2, i);
-        ctx.lineTo(WIDTH/2, i + 16);
+        ctx.moveTo(WIDTH / 2, i);
+        ctx.lineTo(WIDTH / 2, i + 16);
         ctx.stroke();
     }
 }
@@ -80,7 +80,7 @@ function draw() {
     drawRect(AI_X, aiY, PADDLE_WIDTH, PADDLE_HEIGHT);
 
     // Ball
-    drawCircle(ballX + BALL_SIZE/2, ballY + BALL_SIZE/2, BALL_SIZE/2);
+    drawCircle(ballX + BALL_SIZE / 2, ballY + BALL_SIZE / 2, BALL_SIZE / 2);
 }
 
 // Game logic
@@ -90,11 +90,11 @@ function update() {
     ballY += ballSpeedY;
 
     // Ball collision with top/bottom
-    if(ballY <= 0) {
+    if (ballY <= 0) {
         ballY = 0;
         ballSpeedY = -ballSpeedY;
     }
-    if(ballY + BALL_SIZE >= HEIGHT) {
+    if (ballY + BALL_SIZE >= HEIGHT) {
         ballY = HEIGHT - BALL_SIZE;
         ballSpeedY = -ballSpeedY;
     }
@@ -108,8 +108,8 @@ function update() {
         ballX = PLAYER_X + PADDLE_WIDTH;
         ballSpeedX = -ballSpeedX;
         // Add some "spin" based on where it hit the paddle
-        let collidePoint = (ballY + BALL_SIZE/2) - (playerY + PADDLE_HEIGHT/2);
-        collidePoint = collidePoint / (PADDLE_HEIGHT/2);
+        let collidePoint = (ballY + BALL_SIZE / 2) - (playerY + PADDLE_HEIGHT / 2);
+        collidePoint = collidePoint / (PADDLE_HEIGHT / 2);
         ballSpeedY = collidePoint * 5;
     }
 
@@ -121,26 +121,26 @@ function update() {
     ) {
         ballX = AI_X - BALL_SIZE;
         ballSpeedX = -ballSpeedX;
-        let collidePoint = (ballY + BALL_SIZE/2) - (aiY + PADDLE_HEIGHT/2);
-        collidePoint = collidePoint / (PADDLE_HEIGHT/2);
+        let collidePoint = (ballY + BALL_SIZE / 2) - (aiY + PADDLE_HEIGHT / 2);
+        collidePoint = collidePoint / (PADDLE_HEIGHT / 2);
         ballSpeedY = collidePoint * 5;
     }
 
     // Ball out of left or right bounds (reset & add score)
-    if(ballX < 0) {
+    if (ballX < 0) {
         aiScore++;
         resetBall();
     }
-    if(ballX > WIDTH) {
+    if (ballX > WIDTH) {
         playerScore++;
         resetBall();
     }
 
     // AI paddle movement (basic)
-    let aiCenter = aiY + PADDLE_HEIGHT/2;
-    if(aiCenter < ballY + BALL_SIZE/2 - 12) {
+    let aiCenter = aiY + PADDLE_HEIGHT / 2;
+    if (aiCenter < ballY + BALL_SIZE / 2 - 12) {
         aiY += 4.5;
-    } else if(aiCenter > ballY + BALL_SIZE/2 + 12) {
+    } else if (aiCenter > ballY + BALL_SIZE / 2 + 12) {
         aiY -= 4.5;
     }
     // Clamp AI paddle
@@ -159,7 +159,7 @@ function resetBall() {
 }
 
 // Mouse control for player paddle (desktop only)
-canvas.addEventListener('mousemove', function(evt) {
+canvas.addEventListener('mousemove', function (evt) {
     let rect = canvas.getBoundingClientRect();
     let mouseY = evt.clientY - rect.top;
     // Skala ke koordinat asli canvas
@@ -171,17 +171,17 @@ canvas.addEventListener('mousemove', function(evt) {
 
 // Touch control for player paddle (mobile)
 let touchActive = false;
-canvas.addEventListener('touchstart', function(evt) {
+canvas.addEventListener('touchstart', function (evt) {
     touchActive = true;
     handleTouch(evt);
-}, {passive: false});
-canvas.addEventListener('touchmove', function(evt) {
+}, { passive: false });
+canvas.addEventListener('touchmove', function (evt) {
     if (touchActive) handleTouch(evt);
     evt.preventDefault();
-}, {passive: false});
-canvas.addEventListener('touchend', function(evt) {
+}, { passive: false });
+canvas.addEventListener('touchend', function (evt) {
     touchActive = false;
-}, {passive: false});
+}, { passive: false });
 
 function handleTouch(evt) {
     if (evt.touches.length > 0) {
@@ -191,21 +191,8 @@ function handleTouch(evt) {
         playerY = y * scale - PADDLE_HEIGHT / 2;
         // Clamp player paddle
         playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
-
-        // Setelah pemain mendapat skor
-fetch('https://your-backend-url/api/score', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: "UserName", score: playerScore }),
-}).then(res => res.json()).then(data => {
-    if (data.success) alert('Skor kamu berhasil disimpan!');
-});
-        fetch('https://your-backend-url/api/leaderboard')
-    .then(res => res.json())
-    .then(leaderboard => {
-        // Render leaderboard di HTML
-    });
-    
+    }
+}
 
 // Game loop
 function gameLoop() {
@@ -215,4 +202,3 @@ function gameLoop() {
 }
 
 gameLoop();
-
