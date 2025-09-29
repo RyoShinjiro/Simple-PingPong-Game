@@ -193,7 +193,7 @@ function handleTouch(evt) {
         playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
 
 function submitScore(username, score) {
-    fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, score }),
@@ -206,7 +206,7 @@ function submitScore(username, score) {
             alert('Gagal menyimpan skor!');
 
             function submitScore(username, score) {
-    fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, score }),
@@ -229,7 +229,7 @@ function submitScore(username, score) {
 
 function submitScore(score) {
   // Panggil API menggunakan username yang sudah dimasukkan
-  fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+  fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, score })
@@ -247,5 +247,6 @@ function gameLoop() {
 }
 
 gameLoop();
+
 
 
