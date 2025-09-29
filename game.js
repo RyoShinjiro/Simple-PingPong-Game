@@ -224,6 +224,17 @@ function submitScore(username, score) {
         }
     })
     .catch(err => alert('Error: ' + err));
+
+    let username = prompt("Masukkan username Anda:");
+
+function submitScore(score) {
+  // Panggil API menggunakan username yang sudah dimasukkan
+  fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, score })
+  });
+}
 }
     }
 }
@@ -236,4 +247,5 @@ function gameLoop() {
 }
 
 gameLoop();
+
 
