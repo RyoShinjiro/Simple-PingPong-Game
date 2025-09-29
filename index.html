@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Pong Game dengan Leaderboard</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
@@ -9,7 +10,22 @@
     <h1>Pong Game dengan Leaderboard</h1>
     <canvas id="pong" width="700" height="400"></canvas>
     <div class="touch-hint">Geser atau sentuh area kiri untuk menggerakkan paddle!</div>
-    <div id="leaderboard"></div>
-    <script src="game.js"></script>
+    <div id="leaderboard">Leaderboard akan tampil di sini.</div>
+    <script>
+      // Cek apakah file game.js berhasil dimuat
+      function scriptLoaded() {
+        if (typeof startGame !== 'function') {
+          document.getElementById('leaderboard').innerText = 'Gagal memuat game.js, pastikan file game.js tersedia!';
+        }
+      }
+      // Load game.js secara dinamis dan cek keberhasilannya
+      var script = document.createElement('script');
+      script.src = 'game.js';
+      script.onload = scriptLoaded;
+      script.onerror = function() {
+        document.getElementById('leaderboard').innerText = 'Gagal memuat game.js, pastikan file game.js tersedia!';
+      };
+      document.body.appendChild(script);
+    </script>
 </body>
 </html>
