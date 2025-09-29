@@ -191,8 +191,21 @@ function handleTouch(evt) {
         playerY = y * scale - PADDLE_HEIGHT / 2;
         // Clamp player paddle
         playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
-    }
-}
+
+        // Setelah pemain mendapat skor
+fetch('https://your-backend-url/api/score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: "UserName", score: playerScore }),
+}).then(res => res.json()).then(data => {
+    if (data.success) alert('Skor kamu berhasil disimpan!');
+});
+        fetch('https://your-backend-url/api/leaderboard')
+    .then(res => res.json())
+    .then(leaderboard => {
+        // Render leaderboard di HTML
+    });
+    
 
 // Game loop
 function gameLoop() {
@@ -202,3 +215,4 @@ function gameLoop() {
 }
 
 gameLoop();
+
