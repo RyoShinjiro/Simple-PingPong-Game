@@ -191,6 +191,40 @@ function handleTouch(evt) {
         playerY = y * scale - PADDLE_HEIGHT / 2;
         // Clamp player paddle
         playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
+
+function submitScore(username, score) {
+    fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, score }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Skor kamu berhasil disimpan!');
+        } else {
+            alert('Gagal menyimpan skor!');
+
+            function submitScore(username, score) {
+    fetch('https://simple-pingpong-backend-production.up.railway.app/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, score }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Skor kamu berhasil disimpan!');
+        } else {
+            alert('Gagal menyimpan skor!');
+        }
+    })
+    .catch(err => alert('Error: ' + err));
+}
+        }
+    })
+    .catch(err => alert('Error: ' + err));
+}
     }
 }
 
@@ -202,3 +236,4 @@ function gameLoop() {
 }
 
 gameLoop();
+
