@@ -3,7 +3,6 @@ const ctx = canvas.getContext('2d');
 
 // Responsive resize for canvas (for mobile)
 function resizeCanvas() {
-    // Keep 16:9 aspect ratio
     let width = Math.min(window.innerWidth * 0.99, 700);
     let height = width * 400 / 700;
     canvas.style.width = width + "px";
@@ -12,7 +11,6 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Game constants
 const WIDTH = 700;
 const HEIGHT = 400;
 
@@ -41,7 +39,6 @@ function drawRect(x, y, w, h, color = "#fff") {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
 }
-
 function drawCircle(x, y, r, color = "#fff") {
     ctx.fillStyle = color;
     ctx.beginPath();
@@ -49,7 +46,6 @@ function drawCircle(x, y, r, color = "#fff") {
     ctx.closePath();
     ctx.fill();
 }
-
 function drawNet() {
     ctx.strokeStyle = '#fff5';
     ctx.lineWidth = 4;
@@ -60,7 +56,6 @@ function drawNet() {
         ctx.stroke();
     }
 }
-
 function drawScore() {
     ctx.font = "32px Arial";
     ctx.fillStyle = "#fff";
@@ -68,28 +63,19 @@ function drawScore() {
     ctx.fillText(playerScore, WIDTH / 2 - 50, 50);
     ctx.fillText(aiScore, WIDTH / 2 + 50, 50);
 }
-
 function draw() {
-    // Clear
     drawRect(0, 0, WIDTH, HEIGHT, "#111");
     drawNet();
     drawScore();
-
-    // Paddles
     drawRect(PLAYER_X, playerY, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawRect(AI_X, aiY, PADDLE_WIDTH, PADDLE_HEIGHT);
-
-    // Ball
     drawCircle(ballX + BALL_SIZE / 2, ballY + BALL_SIZE / 2, BALL_SIZE / 2);
 }
 
-// Game logic
 function update() {
-    // Ball movement
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // Ball collision with top/bottom
     if (ballY <= 0) {
         ballY = 0;
         ballSpeedY = -ballSpeedY;
@@ -107,12 +93,10 @@ function update() {
     ) {
         ballX = PLAYER_X + PADDLE_WIDTH;
         ballSpeedX = -ballSpeedX;
-        // Add some "spin" based on where it hit the paddle
         let collidePoint = (ballY + BALL_SIZE / 2) - (playerY + PADDLE_HEIGHT / 2);
         collidePoint = collidePoint / (PADDLE_HEIGHT / 2);
         ballSpeedY = collidePoint * 5;
     }
-
     // AI paddle collision
     if (
         ballX + BALL_SIZE >= AI_X &&
@@ -133,6 +117,13 @@ function update() {
     }
     if (ballX > WIDTH) {
         playerScore++;
+        // Submit score ke backend leaderboard
+        if (playerScore === 1) { // hanya submit saat pertama cetak skor
+            let username = prompt("Masukkan username Anda:");
+            if (username) {
+                submitScore(username, playerScore);
+            }
+        }
         resetBall();
     }
 
@@ -143,29 +134,25 @@ function update() {
     } else if (aiCenter > ballY + BALL_SIZE / 2 + 12) {
         aiY -= 4.5;
     }
-    // Clamp AI paddle
     aiY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, aiY));
 }
 
 function resetBall() {
     ballX = WIDTH / 2 - BALL_SIZE / 2;
     ballY = HEIGHT / 2 - BALL_SIZE / 2;
-    // Randomize new direction
-    let angle = (Math.random() * 0.5 - 0.25) * Math.PI; // -0.25PI..0.25PI
+    let angle = (Math.random() * 0.5 - 0.25) * Math.PI;
     let speed = 6;
     let dir = (Math.random() > 0.5) ? 1 : -1;
     ballSpeedX = Math.cos(angle) * speed * dir;
     ballSpeedY = Math.sin(angle) * speed;
 }
 
-// Mouse control for player paddle (desktop only)
+// Mouse control for player paddle (desktop)
 canvas.addEventListener('mousemove', function (evt) {
     let rect = canvas.getBoundingClientRect();
     let mouseY = evt.clientY - rect.top;
-    // Skala ke koordinat asli canvas
     let scale = HEIGHT / canvas.getBoundingClientRect().height;
     playerY = mouseY * scale - PADDLE_HEIGHT / 2;
-    // Clamp player paddle
     playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
 });
 
@@ -189,64 +176,45 @@ function handleTouch(evt) {
         let y = evt.touches[0].clientY - rect.top;
         let scale = HEIGHT / canvas.getBoundingClientRect().height;
         playerY = y * scale - PADDLE_HEIGHT / 2;
-        // Clamp player paddle
         playerY = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, playerY));
-
-function submitScore(username, score) {
-    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, score }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            alert('Skor kamu berhasil disimpan!');
-        } else {
-            alert('Gagal menyimpan skor!');
-
-            function submitScore(username, score) {
-    fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, score }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            alert('Skor kamu berhasil disimpan!');
-        } else {
-            alert('Gagal menyimpan skor!');
-        }
-    })
-    .catch(err => alert('Error: ' + err));
-}
-        }
-    })
-    .catch(err => alert('Error: ' + err));
-
-    let username = prompt("Masukkan username Anda:");
-
-function submitScore(score) {
-  // Panggil API menggunakan username yang sudah dimasukkan
-  fetch('https://railway.com/project/c3fe89ab-d7bf-45b1-a9c1-eea53de52f91/service/f737e1db-050e-4c36-932c-319dbb4a32c2?environmentId=7bdc8caf-b4f4-4c71-93dd-85996f043a93&id=bed934e6-13d8-4d51-a79f-e285621ebd17#details', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, score })
-  });
-}
-}
     }
 }
 
-// Game loop
+// Backend leaderboard submission
+function submitScore(username, score) {
+    fetch('https://YOUR_BACKEND_URL/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, score }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Skor kamu berhasil disimpan!');
+            loadLeaderboard();
+        } else {
+            alert('Gagal menyimpan skor!');
+        }
+    })
+    .catch(err => alert('Error: ' + err));
+}
+
+// Tampilkan leaderboard
+function loadLeaderboard() {
+    fetch('https://YOUR_BACKEND_URL/api/leaderboard')
+        .then(res => res.json())
+        .then(data => {
+            let html = '<h3>Leaderboard</h3><ol>';
+            data.forEach(entry => html += `<li>${entry.username}: ${entry.score}</li>`);
+            html += '</ol>';
+            document.getElementById('leaderboard').innerHTML = html;
+        });
+}
+loadLeaderboard();
+
 function gameLoop() {
     update();
     draw();
     requestAnimationFrame(gameLoop);
 }
-
 gameLoop();
-
-
-
