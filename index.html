@@ -2,15 +2,28 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Pong Game dengan Leaderboard</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Pong Game - Modern Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Pong Game dengan Leaderboard</h1>
-    <canvas id="pong" width="700" height="400"></canvas>
-    <div class="touch-hint">Geser atau sentuh area kiri untuk menggerakkan paddle!</div>
-    <div id="leaderboard"></div>
+    <div class="container">
+        <header>
+            <h1>🎮 Pong Game</h1>
+            <p>Gerakkan paddle kiri untuk mengalahkan lawan!</p>
+        </header>
+
+        <div class="game-area">
+            <canvas id="pong" width="700" height="400"></canvas>
+            <div class="touch-hint">Geser atau sentuh area kiri untuk menggerakkan paddle!</div>
+        </div>
+
+        <div class="leaderboard-container">
+            <h2>🏆 Leaderboard</h2>
+            <div id="leaderboard">Memuat...</div>
+        </div>
+    </div>
+
     <script src="game.js"></script>
 </body>
 </html>
